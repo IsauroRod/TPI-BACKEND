@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -17,7 +18,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Gateway" options="-parameters" />
+      <module name="Gateway" options="" />
       <module name="TPI-Backend" options="-parameters" />
       <module name="TPI-Backend (1)" options="-parameters" />
       <module name="TPI-Backend (2)" options="-parameters" />

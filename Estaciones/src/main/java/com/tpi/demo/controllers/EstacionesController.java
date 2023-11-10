@@ -33,17 +33,37 @@ public class EstacionesController {
         esServ.add(estaciones);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
-    @GetMapping("/buscar")
-    public ResponseEntity<List<EstacionesEntity>> buscarEstacionesPorLongitudYLatitud(
-            @RequestParam("latitud") Float latitud,
-            @RequestParam("longitud") Float longitud) {
-        List<EstacionesEntity> estaciones = esServ.findByLongitudAndLatitud(latitud, longitud);
+    @GetMapping("/ubi")
+    public ResponseEntity<EstacionesEntity> getEstacionMasCercana(
+            @RequestParam("latitud") double latitudCliente,
+            @RequestParam("longitud") double longitudCliente) {
 
-        if (!estaciones.isEmpty()) {
-            return ResponseEntity.ok(estaciones);
-        } else {
+        List<EstacionesEntity> estaciones = esServ.findAll();
+
+        if (estaciones.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+
+        EstacionesEntity estacionMasCercana = null;
+        double distanciaMinima = Double.MAX_VALUE;
+
+        for (EstacionesEntity estacion : estaciones) {
+            double distancia = calcularDistancia(latitudCliente, longitudCliente, estacion.getLatitud(), estacion.getLongitud());
+
+            if (distancia < distanciaMinima) {
+                distanciaMinima = distancia;
+                estacionMasCercana = estacion;
+            }
+        }
+
+        return ResponseEntity.ok(estacionMasCercana);
+    }
+
+    private double calcularDistancia(double lat1, double lon1, double lat2, double lon2) {
+        // Fórmula de distancia euclidiana
+        double dx = lat2 - lat1;
+        double dy = lon2 - lon1;
+        return Math.sqrt(dx * dx + dy * dy);
     }
 
 
